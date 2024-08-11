@@ -1,0 +1,35 @@
+﻿@model (List<AttendanceDataViewModel> attendanceRecords, List<StudentAssignmentGradingViewModel> assignmentRecords)
+
+
+
+<form asp-action="AttendanceValidation" asp-controller="StudentAttendance" method="post">
+    @for (var i = 0; i < Model.attendanceRecords.Count; i++)
+    {
+        <div>
+            <input type="hidden" name="[@i].Id" value="@Model.attendanceRecords[i].Id" />
+            <label>Course: <b>@Model.attendanceRecords[i].CourseName</b>. Validate attendance for Student <b>@Model.attendanceRecords[i].StudentName</b> Present between @Model.attendanceRecords[i].StartsAt and  @Model.attendanceRecords[i].EndsAt:</label>
+            <input type="checkbox" name="[@i].IsValidated" value="true" @(Model.attendanceRecords[i].IsValidated ? "checked" : "") />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<form asp-action="StudentAssignmentsGrades" asp-controller="StudentAttendance" method="post">
+@for (var i = 0; i < Model.assignmentRecords.Count; i++)
+{
+    <div>
+
+        <div>
+            <input type="hidden" name="[@i].Id" value="@Model.assignmentRecords[i].Id" />
+            <label>Assignment: <b>@Model.assignmentRecords[i].AssignmentName</b> @Model.assignmentRecords[i].ShortDescription . Grade for Student <b>@Model.assignmentRecords[i].StudentName</b>: </label>
+            <input type="number" name="[@i].Grade" value="@Model.assignmentRecords[i].Grade" />
+            <label>Bonus: </label>
+            <input type="number" name="[@i].Bonus" value="@Model.assignmentRecords[i].Bonus" />
+        </div>
+
+
+    </div>
+}
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

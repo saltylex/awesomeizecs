@@ -1,0 +1,171 @@
+@model IEnumerable<AwesomeizeCS.Models.TeacherOverviewViewModel>
+@{
+    ViewData["Title"] = "Teacher Overview";
+}
+<link rel="stylesheet" type="text/css" href="css/teacher-overview.css">
+@if (Model == null)
+{
+    <h5>No current activity.</h5>
+}
+else if (!Model.Any())
+{
+    <h5>Waiting for students to be here. Refresh?</h5>
+}
+else
+{
+    <div align="center">
+        <h5>Week @(Model.First().Time?.Week)</h5>
+        <h4>Group @(Model.First().Time?.For) - @(Model.First().CourseName)</h4>
+    </div>
+    <form asp-action="AttendanceValidation" asp-controller="TeacherOverview" method="post">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 200px">Student Name</th>
+                <th>Attendance</th>
+                <th style="padding-left: 70px;">Assignments</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                int index = 0;
+            }
+            @foreach (var item in Model)
+            {
+                @if (item.Attendance != null)
+                {
+                    <tr>
+                        <td style="width: auto">
+                            <a href="@Url.Action("StudentDetail", "StudentCourses", new { studentId = item.StudentCourse.Id })">@item.StudentName</a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="attendanceRecords[@index].IsValidated"
+                                   class="form-check-input"
+                                   value="true" @(item.Attendance.IsValidated ? "checked" : "")/>
+                            <input type="hidden" name="attendanceRecords[@index].Id"
+                                   value="@item.Attendance.Id"/>
+                        </td>
+                        <td>
+                            @if (item.Assignments?.Count == 0)
+                            {
+                                <p style="color:green; font-weight: bold;">All assignments completed!</p>
+                            }
+                            else
+                            {
+                                <ul style="list-style: none; padding-left: 0;">
+                                    @foreach (var assignment in item.Assignments)
+                                    {
+                                        
+                                    <li style="display: flex; width: 100%; align-items: flex-start;">
+                                        <div style="flex: 1; min-width: 0; padding-left: 60px;">
+                                            <div>
+                                                <span onclick="toggleDescriptionVisibility('@assignment.Id')" style="cursor: pointer; font-size: large; font-weight: bold; text-decoration: underline;">
+                                                    @assignment.Assignment.Name
+                                                </span>
+                                            </div>
+                                            <div>
+                                                 @if (assignment.Assignment.HasGrade)
+                                                 {
+                                                     <label>Grade:</label>
+                                                     <input class="form-control grade-input" name="Grade" type="text" value="@assignment.Grade" style="width: 50px; display: inline-block;" data-assignment-id="@assignment.Id" data-field="Grade"/>
+                                                     <span class="text-danger grade-error" style="display: none;"></span>
+                                                 }
+                                                @if (assignment.Assignment.Bonus is > 0)
+                                                {
+                                                    <label style="margin-left: 20px;">Bonus:</label>
+                                                    <input class="form-control bonus-input" name="Bonus" type="text" value="@assignment.Bonus" style="width: 50px; display: inline-block;" data-assignment-id="@assignment.Id" data-field="Bonus"/>
+                                                    <span class="text-danger bonus-error" style="display: none;"></span>
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                        <div id="desc-@assignment.Id" style="flex-basis: 50%; max-width: 50%; background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-left: 10px; visibility: hidden; overflow: auto; white-space: normal;">
+                                            <strong>Short Description: </strong> <span id="description-text-@assignment.Id">@assignment.Assignment.ShortDescription</span>
+                                        </div>
+                                    </li>
+                                    }
+                                </ul>
+                            }
+                        </td>
+                    </tr>
+                    index++;
+                }
+            }
+            </tbody>
+        </table>
+        <p style="margin-bottom: 10px">
+            <b>
+                <u>Attending students:</u> @Model.Count(a => a.Attendance != null)
+            </b>
+        </p><br/>
+        <button type="submit" class="btn btn-primary">Validate Attendance</button>
+
+        <div id="submissionMessage" style="display: none; margin-top: 20px;" class="alert"></div>
+    </form>
+
+    <script>
+    function toggleDescriptionVisibility(assignmentId) {
+        const descElement = document.getElementById('desc-' + assignmentId);
+        descElement.style.visibility = (descElement.style.visibility === 'visible' ? 'hidden' : 'visible');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll('.grade-input, .bonus-input');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('change', function (event) {
+                const newValue = event.target.value;
+                const fieldName = event.target.dataset.field;
+
+
+                // Validate the input value
+                if (!isValidDecimal(newValue)) {
+                    const errorElement = event.target.parentElement.querySelector(`.${fieldName.toLowerCase()}-error`);
+                    errorElement.textContent = `Invalid ${fieldName.toLowerCase()} value. Please enter a valid grade.`;
+                    errorElement.style.display = 'block';
+                    event.target.value = ''; // Clear invalid value
+                } else {
+                    // If value is valid, hide the error message
+                    const errorElement = event.target.parentElement.querySelector(`.${fieldName.toLowerCase()}-error`);
+                    errorElement.style.display = 'none';
+                    const assignmentId = event.target.dataset.assignmentId;
+                    // Send AJAX request to update database
+                    updateDatabase(assignmentId, newValue, fieldName);
+                }
+            });
+        });
+
+        function isValidDecimal(value) {
+            if (value < 0 || value > 10)
+                return false;
+            return /^\d*\.?\d*$/.test(value);
+        }
+
+        // Function to update database using AJAX
+        function updateDatabase(assignmentId, newValue, fieldName) {
+            // Send AJAX request to your backend to update the database
+            fetch('/api/update-assignment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    assignmentId: assignmentId,
+                    newValue: newValue,
+                    field: fieldName
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update database');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+
+</script>
+}

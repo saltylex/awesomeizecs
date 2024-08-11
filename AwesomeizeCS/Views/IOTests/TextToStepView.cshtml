@@ -1,0 +1,12 @@
+﻿@model List<AwesomeizeCS.Domain.TestStep>
+<div class="form-horizontal">
+    <h4>Test Step From Text</h4>
+    <hr />
+    @Html.TextArea("testStepFromText", string.Join("\n", Model.OrderBy(s=>s.Order).Select(s=>string.Format("{0}; {1}",s.ProvidedInput, s.ExpectedOutput))), new { style = "width: 100%; max-width: 100%; height: 147px;" })
+
+    @* <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create From Text" class="btn btn-default" />
+        </div>
+    </div>  doesnt work  due to nature of DB*@
+</div>

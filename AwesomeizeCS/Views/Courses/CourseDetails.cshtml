@@ -1,0 +1,51 @@
+﻿@model AwesomeizeCS.Models.CourseViewModel
+<link rel="stylesheet" type="text/css" href="css/course-details.css">
+@if (Model == null)
+{
+    <h5>No courses.</h5>
+}
+else
+{
+    <div class="container mt-5">
+        <div class="row">
+            @for (int i = 0; i < Model.CourseInformation.Count; i++)
+            {
+                ViewBag.currentCourse = Model.CourseInformation[i].Id;
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">@Model.CourseInformation[i].Name</h5>
+                            <p class="card-text text-center">@Model.CourseInformation[i].AcademicYear</p>
+                            <p class="card-text text-center">@Model.CourseInformation[i].Language.ToString()</p>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Teachers</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var teacher in Model.TeachersPerCourse[i])
+                                {
+                                    @if (User.Identity.Name == teacher)
+                                    {
+                                        <tr><td style="font-weight: bold">@teacher</td></tr>
+                                    }
+                                    else
+                                    {
+                                        <tr><td>@teacher</td></tr>
+                                    }
+                                }
+                                
+                                </tbody>
+                            </table>
+                            <a class="btn btn-primary d-block mx-auto" style="margin-bottom: 5px" href="@Url.Action("Details", "Courses", new { id = Model.CourseInformation[i].Id })">View Course Details</a>
+                            <a class="btn btn-secondary d-block mx-auto" style="margin-bottom: 5px" href="@Url.Action("Edit", "Courses", new { id = Model.CourseInformation[i].Id })">Edit Course Details</a>
+                            <a class="btn btn-success d-block mx-auto" style="margin-bottom: 5px" href="@Url.Action("Index", "TeacherCourses", new { id = Model.CourseInformation[i].Id })">Manage Teaching Assistants</a>
+                            <a class="btn btn-secondary d-block mx-auto" style="margin-bottom: 5px" href="@Url.Action("Index", "Assignments", new { id = Model.CourseInformation[i].Id })">Manage Assignments</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

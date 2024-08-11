@@ -1,0 +1,106 @@
+@model AwesomeizeCS.Models.AssignmentDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Assignment</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.Order)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.Order)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.ShortDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.ShortDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.Content)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.Content)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.VisibleFromWeek)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.VisibleFromWeek)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.SolvableFromWeek)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.SolvableFromWeek)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.SolvableToWeek)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.SolvableToWeek)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.HasGrade)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.HasGrade)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.Bonus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.Bonus)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Assignment?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    <form asp-area="" asp-controller="StudentAssignments" asp-action="AssignToAll" method="post">
+        <input type="hidden" name="Id" value="@Model.Assignment?.Id"/>
+        <button type="submit" class="btn btn-success d-block mx-auto" style="margin-bottom: 5px">Assign To All Students</button>
+    </form>
+    @if (Model.Children != null && Model.Children.Any())
+    {
+        <form asp-area="" asp-controller="StudentAssignments" asp-action="AssignSubproblemRandomlyToAll" method="post">
+            <input type="hidden" name="Id" value="@Model.Assignment?.Id"/>
+            <button type="submit" class="btn btn-warning d-block mx-auto" style="margin-bottom: 5px">Assign Random Subproblem To All Students</button>
+        </form>
+    }
+    <a class="btn btn-secondary d-block mx-auto" style="margin-bottom: 5px; width: 220px" href="@Url.Action("Create", "IOTests", new { id = @Model.Assignment.Id })">Create Test for assignment</a>
+        <h4>Sub Assignments</h4>
+        <div class="row">
+            @foreach (var child in Model.Children)
+            {
+                <div class="col-sm-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@child.Name</h5>
+                            <p class="card-text">@child.ShortDescription</p>
+                            <p class="card-text">@child.Bonus</p>
+                            <p class="card-text">Has grade?: @child.HasGrade</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+</div>

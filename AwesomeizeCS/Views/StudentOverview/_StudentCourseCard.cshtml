@@ -1,0 +1,122 @@
+﻿@model AwesomeizeCS.Models.StudentOverviewViewModel
+
+@{
+    var collapseId = $"collapse{Model.CourseName.Replace(" ", "")}{Model.AcademicYear}";
+}
+<div class="card mb-4 shadow-sm course-block">
+    <div class="card-header bg-primary text-white" data-bs-toggle="collapse" data-bs-target="#@collapseId" style="cursor: pointer;">
+        <h3 class="card-title">@Model.CourseName - @Model.AcademicYear</h3>
+    </div>
+    <div id="@collapseId" class="collapse">
+        <div class="card-body bg-light">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Attendances</h5>
+                    @if (Model.CourseAttendances > 0)
+                    {
+                        <p>
+                            <strong>Course:</strong> @Model.CourseAttendances
+                        </p>
+                    }
+                    <p>
+                        <strong>Laboratory:</strong> @Model.LaboratoryAttendances
+                    </p>
+                    <p>
+                        <strong>Seminar:</strong> @Model.SeminarAttendances
+                    </p>
+                </div>
+                <div class="col-md-8">
+                    <h5>Assignments</h5>
+                    <div>
+                        @if (Model.CourseAssignments.Any())
+                        {
+                            <strong>Course Assignments</strong>
+                            <div class="row">
+                                @foreach (var assignment in Model.CourseAssignments)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><a href=@($"StudentAssignments/AssignmentDetails/{assignment.Id}")>@assignment.Name</a></h6>
+                                                <p class="card-text">
+                                                    Grade:
+                                                    @(assignment.Grade.HasValue ? $"{assignment.Grade.Value}\n" : "Not Graded")
+                                                    @if (assignment.Bonus.HasValue)
+                                                    {
+                                                        @("Bonus: " + $"{assignment.Bonus.Value}")
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <strong>Seminar Assignments</strong>
+                        @if (Model.SeminarAssignments.Any())
+                        {
+                            <div class="row">
+                                @foreach (var assignment in Model.SeminarAssignments)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><a href=@($"StudentAssignments/AssignmentDetails/{assignment.Id}")>@assignment.Name</a></h6>
+                                                <p class="card-text">
+                                                    Grade:
+                                                    @(assignment.Grade.HasValue ? $"{assignment.Grade.Value}\n" : "Not Graded")
+                                                    @if (assignment.Bonus.HasValue)
+                                                    {
+                                                        @("Bonus: " + $"{assignment.Bonus.Value}")
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p>None! :)</p>
+                        }
+                    </div>
+                    <div>
+                        <strong>Laboratory Assignments</strong>
+                        @if (Model.LaboratoryAssignments.Any())
+                        {
+                            <div class="row">
+                                @foreach (var assignment in Model.LaboratoryAssignments)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><a href=@($"StudentAssignments/AssignmentDetails/{assignment.Id}")>@assignment.Name</a></h6>
+                                                <p class="card-text">
+                                                    Grade:
+                                                    @(assignment.Grade.HasValue ? $"{assignment.Grade.Value}\n" : "Not Graded")
+                                                    @if (assignment.Bonus.HasValue)
+                                                    {
+                                                        @("Bonus: " + $"{assignment.Bonus.Value}")
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p>None! :)</p>
+                        }
+                    </div>
+                    <div>Grade so far: @($"{Model.GradeSoFar:n2}")</div>
+                </div>
+            </div>
+            <a href="@Url.Action("Details", "Courses", new { id = Model.CourseId })" class="card-header bg-primary text-white" style="cursor: pointer; text-decoration: none;">View Course Details</a>
+        </div>
+    </div>
+</div>

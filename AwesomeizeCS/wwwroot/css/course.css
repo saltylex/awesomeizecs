@@ -1,0 +1,26 @@
+﻿.details-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+dt,dd {
+    flex: 1;
+}
+
+dt {
+    text-align: left;
+}
+
+dd {
+    text-align: right;
+}

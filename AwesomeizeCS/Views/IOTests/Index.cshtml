@@ -1,0 +1,52 @@
+﻿@model IEnumerable<AwesomeizeCS.Domain.IOTest>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>IO Tests</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "IOTests", new { id = ViewBag.AssignmentId != null ? ViewBag.AssignmentId : null }, null)
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hint)
+        </th>
+@*         <th>
+            @Html.DisplayNameFor(model => model.Specific)
+        </th> *@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.OrderBy(t => t.Priority))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hint)
+            </td>
+@*             <td>
+                @Html.Raw(item.ToString().Replace("<regex>", "&lt;regex&gt;"))
+            </td> *@
+            <td>
+                @Html.ActionLink("Edit", "Edit", "IOTests", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "IOTests", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "IOTests", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,23 @@
+﻿﻿ 
+@model IEnumerable<AwesomeizeCS.Domain.Attendance>
+<h1>View Attendance</h1>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>t1</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var attendance in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => attendance)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

@@ -1,0 +1,100 @@
+@model IEnumerable<AwesomeizeCS.Models.CoursesTeacherNameViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<style>
+     td {
+            padding: 8px;
+            text-align: left;
+            max-width: 120px;
+            font-size: 0.9em;
+            word-wrap: break-word;
+            word-break: normal;
+        }
+</style>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+                @Html.DisplayNameFor(model => model.CourseInfo.Name)
+        </th>
+        <th>
+                @Html.DisplayNameFor(model => model.MainTeacher)
+        </th>
+        <th>
+                @Html.DisplayNameFor(model => model.CourseInfo.Language)
+        </th>
+        <th>
+                @Html.DisplayNameFor(model => model.CourseInfo.AcademicYear)
+        </th>
+        <th>
+            No. Courses
+        </th>
+        <th>
+            No. Seminars
+        </th>
+        <th>
+            No. Labs
+        </th>
+        <th>
+            Course Attendance
+        </th>
+        <th>
+            Seminar Attendance
+        </th>
+        <th>
+            Lab Attendance
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.Name)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.MainTeacher)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.Language)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.AcademicYear)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.NumberOfCourses)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.NumberOfSeminars)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.NumberOfLabs)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.DefaultCourseAttendanceTracking)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.DefaultSeminarAttendanceTracking)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo.DefaultLaboratoryAttendanceTracking)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.CourseInfo.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CourseInfo.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CourseInfo.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

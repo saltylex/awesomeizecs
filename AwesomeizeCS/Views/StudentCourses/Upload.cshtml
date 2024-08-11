@@ -1,0 +1,16 @@
+﻿@model IFormFile
+
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h1>Upload File</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="uploadDirectory" value="@ViewBag.UploadDirectory" />
+    <div class="form-group">
+        <label for="file">Choose File:</label>
+        <input type="file" id="file" name="file" class="form-control-file" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>

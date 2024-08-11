@@ -1,0 +1,140 @@
+@model AwesomeizeCS.Domain.Course
+
+@{
+    ViewData["Title"] = "Details";
+    var files = ViewBag.Files as List<string>;
+    var isAuthorizedUser = User.IsInRole("Teacher") || User.IsInRole("Admin");
+}
+<link rel="stylesheet" href="~/css/course.css" asp-append-version="true"/>
+
+<div class="details-container">
+    <h4 class="text-center">@Model.Name - Details</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        @if (isAuthorizedUser)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MainTeacherId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MainTeacherId)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AcademicYear)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AcademicYear)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfCourses)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfCourses)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfSeminars)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfSeminars)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfLabs)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfLabs)
+        </dd>
+        @if (isAuthorizedUser)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DefaultCourseAttendanceTracking)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DefaultCourseAttendanceTracking)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DefaultSeminarAttendanceTracking)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DefaultSeminarAttendanceTracking)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DefaultLaboratoryAttendanceTracking)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DefaultLaboratoryAttendanceTracking)
+            </dd>
+        }
+    </dl>
+</div>
+@if (isAuthorizedUser)
+{
+    <div class="text-center">
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a asp-action="CourseDetails">Back to List</a>
+        <form method="post" asp-action="UploadCourseFile" asp-route-id="@Model.Id" enctype="multipart/form-data" class="mt-3">
+            <input type="hidden" name="uploadDirectory" value="@ViewBag.UploadDirectory"/>
+            <div class="form-group">
+                <input type="file" id="file" name="file" class="form-control-file" onchange="toggleUploadButton()"/>
+                <button type="submit" id="uploadButton" class="btn btn-primary mt-2" disabled>Upload</button>
+            </div>
+        </form>
+    </div>
+}
+<div class="file-list text-center mt-4">
+    @foreach (var file in files)
+    {
+        <div class="card d-inline-block mb-3" id="file-@file">
+            <div class="card-body  d-flex justify-content-between align-items-center">
+                <h6 class="card-title" style="padding-right: 4px">
+                    <a href="@Url.Action("DownloadFile", "Courses", new { id = Model.Id, fileName = file })" class="text-decoration-none" download>
+                        @file
+                        @if (!isAuthorizedUser)
+                        {
+                            <img src="@Url.Content("~/download.png")" width="20px" height="20px"/>
+                        }
+
+                    </a>
+                </h6>
+                @if (isAuthorizedUser)
+                {
+                    <button class="btn btn-danger btn-sm" onclick="deleteFile('@Model.Id', '@file')">Delete</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+<script>
+function toggleUploadButton() {
+    const fileInput = document.getElementById('file');
+    const uploadButton = document.getElementById('uploadButton');
+    uploadButton.disabled = !fileInput.value;
+}
+
+function deleteFile(courseId, fileName) {
+    if (confirm('Are you sure you want to delete this file?')) {
+        const url = '@Url.Action("DeleteFile", "Courses")' + '?id=' + courseId + '&fileName=' + encodeURIComponent(fileName);
+        fetch(url, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('file-' + fileName).remove();
+                } else {
+                    alert('Failed to delete the file.');
+                }
+            })
+            .catch(error => alert('Error: ' + error));
+    }
+}
+</script>

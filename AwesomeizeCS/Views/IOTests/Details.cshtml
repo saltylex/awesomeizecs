@@ -1,0 +1,100 @@
+﻿@model AwesomeizeCS.Domain.IOTest
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>IO Test Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hint)
+        </dd>
+
+    </dl>
+</div>
+<div style="display: flex;">
+    @using (Html.BeginForm("CreateStep", "IOTests", new { testId = Model.Id }, FormMethod.Post, null,  new { Style = "width: 50%; display: inline-block;" })){
+    
+        @Html.Partial("~/Views/IOTests/CreateStepView.cshtml", new AwesomeizeCS.Domain.TestStep())
+    }
+    @using (Html.BeginForm("TextToStepView", "IOTests", new { testId = Model.Id }, FormMethod.Post, null, new { Style = "width: 50%; display: inline-block;" }))
+    {
+        @Html.Partial("~/Views/IOTests/TextToStepView.cshtml", Model.Steps == null ? new List<AwesomeizeCS.Domain.TestStep> () : Model.Steps)
+    }
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Steps.First().Order)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Steps.First().ProvidedInput)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Steps.First().ExpectedOutput)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Steps != null ? Model.Steps.OrderBy(s => s.Order).ToList() : new List<AwesomeizeCS.Domain.TestStep> ())
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProvidedInput)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpectedOutput)
+            </td>
+            <td>
+                @if (item.Order == 1)
+                {
+                    @Html.Raw("Move Up");
+                }
+                else
+                {
+                @Html.ActionLink("Move Up", "MoveUpStep", "IOTests", new { id = item.Id, testId = Model.Id }, null)} |
+
+                @if (item.Order == Model.Steps.Count)
+                {
+                    @Html.Raw("Move Down");
+                }
+                else
+                {
+                @Html.ActionLink("Move Down", "MoveDownStep", "IOTests", new { id = item.Id, testId = Model.Id }, null)} |
+                @Html.ActionLink("Delete", "DeleteStep", "IOTests", new { id = item.Id, testId = Model.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

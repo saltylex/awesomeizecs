@@ -1,0 +1,128 @@
+@using TechnologySandbox.Data
+@model AwesomeizeCS.Domain.Course
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<style>
+    .row {
+        display: flex;
+        justify-content: center; /* Center the columns in the row */
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    form {
+        width: 90%;
+        margin: auto;
+    }
+
+    .form-group {
+        margin-bottom: 5px; /* Space between inputs */
+    }
+
+    .form-control, .btn-primary {
+        width: 100%; /* Full width for inputs and button */
+    }
+    div > a, .btn-primary {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+    }
+    label {
+        font-weight: bold;
+    }
+</style>
+
+<h1 style="text-align: center">Edit Course</h1>
+<hr />
+<form asp-action="Edit" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainTeacherId" class="control-label"></label>
+                <input asp-for="MainTeacherId" class="form-control" />
+                <span asp-validation-for="MainTeacherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <select asp-for="Language" class="form-control">
+                    @foreach (var courseLanguage in Enum.GetValues(typeof(CourseLanguage)))
+                    {
+                        <option value="@courseLanguage">@courseLanguage</option>
+                    }
+                </select>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcademicYear" class="control-label"></label>
+                <input asp-for="AcademicYear" class="form-control" />
+                <span asp-validation-for="AcademicYear" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="NumberOfCourses" class="control-label"></label>
+                <input asp-for="NumberOfCourses" class="form-control" />
+                <span asp-validation-for="NumberOfCourses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfSeminars" class="control-label"></label>
+                <input asp-for="NumberOfSeminars" class="form-control" />
+                <span asp-validation-for="NumberOfSeminars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfLabs" class="control-label"></label>
+                <input asp-for="NumberOfLabs" class="form-control" />
+                <span asp-validation-for="NumberOfLabs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DefaultCourseAttendanceTracking" class="control-label"></label>
+                <select asp-for="DefaultCourseAttendanceTracking" class="form-control">
+                    @foreach (var attendanceTracking in Enum.GetValues(typeof(AttendanceTracking)))
+                    {
+                        <option value="@attendanceTracking">@attendanceTracking</option>
+                    }
+                </select>
+                <span asp-validation-for="DefaultCourseAttendanceTracking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DefaultSeminarAttendanceTracking" class="control-label"></label>
+                <select asp-for="DefaultSeminarAttendanceTracking" class="form-control">
+                    @foreach (var attendanceTracking in Enum.GetValues(typeof(AttendanceTracking)))
+                    {
+                        <option value="@attendanceTracking">@attendanceTracking</option>
+                    }
+                </select>
+                <span asp-validation-for="DefaultSeminarAttendanceTracking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DefaultLaboratoryAttendanceTracking" class="control-label"></label>
+                <select asp-for="DefaultLaboratoryAttendanceTracking" class="form-control">
+                    @foreach (var attendanceTracking in Enum.GetValues(typeof(AttendanceTracking)))
+                    {
+                        <option value="@attendanceTracking">@attendanceTracking</option>
+                    }
+                </select>
+                <span asp-validation-for="DefaultLaboratoryAttendanceTracking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="CourseDetails">Back to List</a>
+</div>

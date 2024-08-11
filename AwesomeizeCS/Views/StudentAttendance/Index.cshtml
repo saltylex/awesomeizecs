@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AwesomeizeCS.Domain.Attendance>
+@{
+    ViewBag.Title = "Student Attendance";
+}
+
+<h2 align="center">Welcome!</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>StudentCourse</th>
+        <th>Time</th>
+        <th>Is validated</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+{
+    <tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.StudentCourse)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Time)
+    </td>
+                <td>
+        @Html.DisplayFor(modelItem => item.IsValidated)
+    </td>
+    </tr>
+}
+</table>

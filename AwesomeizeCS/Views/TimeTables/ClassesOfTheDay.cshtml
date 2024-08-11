@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AwesomeizeCS.Domain.TimeTable>
+
+@{
+    ViewBag.Title = "Today's Activities";
+}
+
+@if (!Model.Any())
+{
+    <h5>No activities for the day. :)</h5>
+}
+else
+{
+
+    <h2>Today's Activities</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Starts At</th>
+            <th>Ends At</th>
+            <th>Type</th>
+            <th>For</th>
+            <th>Room</th>
+            <th>Week</th>
+            <th>Course</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StartsAt.ToString("g")</td>
+                <td>@item.EndsAt.ToString("g")</td>
+                <td>@item.Type</td>
+                <td>@item.For</td>
+                <td>@item.Room</td>
+                <td>@item.Week</td>
+                <td>@item.Course?.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

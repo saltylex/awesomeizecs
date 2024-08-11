@@ -1,0 +1,45 @@
+@model AwesomeizeCS.Domain.Attendance
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Attendance</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="StudentCourse" class="control-label"></label>
+                <select asp-for="StudentCourse.Id" asp-items="@(new SelectList(ViewBag.StudentCourses, "Value", "Text"))" class="form-control"></select>
+                <span asp-validation-for="StudentCourse.Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <select asp-for="Time.Id" asp-items="@(new SelectList(ViewBag.TimeTable, "Value", "Text"))" class="form-control"></select>
+                <span asp-validation-for="Time.Id" class="text-danger"></span>
+            </div>
+
+            
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsValidated" /> @Html.DisplayNameFor(model => model.IsValidated)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

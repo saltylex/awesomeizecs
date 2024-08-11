@@ -1,0 +1,197 @@
+@model StudentDetailsViewModel
+
+<a class="nav-link text-dark" asp-area="" asp-controller="TeacherOverview" asp-action="Index" style="text-decoration: underline">< Back to activity</a>
+<h5 align="center">Status for @Model.StudentName - @Model.StudentCourse.Course.Name</h5>
+<h6 align="center">
+    Grade so far:
+    <span style="color: @(Model.GradeSoFar > 5 ? "green" : "red");">
+        @if (Model.GradeSoFar > 10)
+        {
+            @(10)
+        }
+        else
+        {
+            @($"{Model.GradeSoFar:n2}")
+        }
+    </span>
+</h6>
+
+@if (Model.LaboratoryAssignments.Count == 0 && Model.SeminarAssignments.Count == 0 && Model.CourseAssignments.Count == 0)
+{
+    <div align="center">This student has no assignments!</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h4 align="center">Laboratory Assignments</h4>
+            @if (Model.LaboratoryAssignments.Count > 0)
+            {
+                <div class="row">
+                    @foreach (var item in Model.LaboratoryAssignments)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">@item.Assignment.Name</h6>
+                                    <p class="card-text">
+                                        @if (item.Assignment.HasGrade)
+                                        {
+                                            <label style="font-size: small; font-weight: bold">Grade:</label>
+                                            <input class="form-control grade-input" name="Grade" type="text" value="@item.Grade" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Grade"/>
+                                            <span class="text-danger grade-error" style="display: none;"></span>
+                                        }
+                                        @if (item.Assignment.Bonus is > 0)
+                                        {
+                                            <label style="margin-left: 20px; font-size: small; font-weight: bold">Bonus:</label>
+                                            <input class="form-control bonus-input" name="Bonus" type="text" value="@item.Bonus" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Bonus" data-max-bonus="@item.Assignment.Bonus"/>
+                                            <span class="text-danger bonus-error" style="display: none;"></span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div>No assignments!</div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h4 align="center">Seminar Assignments</h4>
+            @if (Model.SeminarAssignments.Count > 0)
+            {
+                <div class="row">
+                    @foreach (var item in Model.SeminarAssignments)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">@item.Assignment.Name</h6>
+                                    <p class="card-text">
+                                        @if (item.Assignment.HasGrade)
+                                        {
+                                            <label style="font-size: small; font-weight: bold">Grade:</label>
+                                            <input class="form-control grade-input" name="Grade" type="text" value="@item.Grade" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Grade"/>
+                                            <span class="text-danger grade-error" style="display: none;"></span>
+                                        }
+                                        @if (item.Assignment.Bonus.HasValue && item.Assignment.Bonus > 0)
+                                        {
+                                            <label style="margin-left: 20px; font-size: small; font-weight: bold">Bonus:</label>
+                                            <input class="form-control bonus-input" name="Bonus" type="text" value="@item.Bonus" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Bonus" data-max-bonus="@item.Assignment.Bonus"/>
+                                            <span class="text-danger bonus-error" style="display: none;"></span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div>No assignments!</div>
+            }
+        </div>
+        @if (Model.CourseAssignments.Count > 0)
+                {
+                    <div class="col-md-4">
+                        <h4 align="center">Course Assignments</h4>
+                        <div class="row">
+                            @foreach (var item in Model.CourseAssignments)
+                            {
+                                <div class="col-md-12 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title">@item.Assignment.Name</h6>
+                                            <p class="card-text">
+                                                @if (item.Assignment.HasGrade)
+                                                {
+                                                    <label style="font-size: small; font-weight: bold">Grade:</label>
+                                                    <input class="form-control grade-input" name="Grade" type="text" value="@item.Grade" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Grade"/>
+                                                    <span class="text-danger grade-error" style="display: none;"></span>
+                                                }
+                                                @if (item.Assignment.Bonus.HasValue && item.Assignment.Bonus > 0)
+                                                {
+                                                    <label style="margin-left: 20px; font-size: small; font-weight: bold">Bonus:</label>
+                                                    <input class="form-control bonus-input" name="Bonus" type="text" value="@item.Bonus" style="width: 55px; display: inline-block;" data-assignment-id="@item.Id" data-field="Bonus" data-max-bonus="@item.Assignment.Bonus"/>
+                                                    <span class="text-danger bonus-error" style="display: none;"></span>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll('.grade-input, .bonus-input');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('change', function (event) {
+                const newValue = event.target.value;
+                const fieldName = event.target.dataset.field;
+
+                if (fieldName === "Grade" && !isValidDecimal(newValue)) {
+                    showError(event.target, fieldName, 'Invalid grade value.');
+                } else if (fieldName === "Bonus") {
+                    const maxBonus = parseFloat(event.target.dataset.maxBonus);
+                    if (!isValidDecimal(newValue) || newValue > maxBonus) {
+                        showError(event.target, fieldName, `Invalid bonus value. Maximum allowed is ${maxBonus}.`);
+                    } else {
+                        hideError(event.target, fieldName);
+                        updateDatabase(event.target.dataset.assignmentId, newValue, fieldName);
+                    }
+                } else {
+                    hideError(event.target, fieldName);
+                    updateDatabase(event.target.dataset.assignmentId, newValue, fieldName);
+                }
+            });
+        });
+
+        function isValidDecimal(value) {
+            return /^\d*\.?\d*$/.test(value) && value >= 0 && value <= 10;
+        }
+
+        function showError(target, fieldName, message) {
+            const errorElement = target.parentElement.querySelector(`.${fieldName.toLowerCase()}-error`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            target.value = '';
+        }
+
+        function hideError(target, fieldName) {
+            const errorElement = target.parentElement.querySelector(`.${fieldName.toLowerCase()}-error`);
+            errorElement.style.display = 'none';
+        }
+
+        function updateDatabase(assignmentId, newValue, fieldName) {
+            fetch('/api/update-assignment-detail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    assignmentId: assignmentId,
+                    newValue: newValue,
+                    field: fieldName
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update database');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+    </script>
+}

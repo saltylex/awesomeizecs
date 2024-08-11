@@ -1,0 +1,28 @@
+@model AwesomeizeCS.Models.AttendanceViewModel
+@{
+    ViewData["Title"] = "Add Attendance";
+}
+
+<h1>Add Attendance</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayFor(model => model.Time)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.StudentCourse)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayFor(model => model.IsValidated)
+    </dt>
+</dl>
+
+@using (Html.BeginForm("Create", "StudentAttendance", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Time.Id)
+    @Html.HiddenFor(model => model.StudentCourse.Id)
+    @Html.HiddenFor(model => model.IsValidated)
+
+    <button type="submit" class="btn btn-primary">Add Attendance</button>
+}
+

@@ -1,0 +1,21 @@
+﻿.custom-card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+.custom-card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.custom-table {
+    border-collapse: collapse;
+}
+.custom-table th, .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.custom-table th {
+    background-color: #f8f9fa;
+    color: #333;
+}
+.btn-custom {
+    margin-bottom: 5px;
+}

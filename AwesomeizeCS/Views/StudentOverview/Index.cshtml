@@ -1,0 +1,24 @@
+﻿@using System.Globalization
+@model IEnumerable<AwesomeizeCS.Models.StudentOverviewViewModel>
+
+@{
+    ViewData["Title"] = "Student Overview";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Welcome, student!</h2>
+    <div class="row mb-4">
+        <div class="col-12">
+            <input type="text" id="courseSearch" class="form-control" placeholder="Search for courses...">
+        </div>
+    </div>
+
+    @foreach (var studentCourse in Model)
+    {
+        <partial name="_StudentCourseCard" model="studentCourse"/>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/course-search.js"></script>
+}

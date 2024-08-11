@@ -1,0 +1,54 @@
+﻿@model AwesomeizeCS.Domain.StudentAssignment
+@{
+    ViewData["Title"] = "Assignment Details";
+    var files = ViewBag.Files as List<string>;
+    bool hasFile = files.Any();
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Assignment Information - @Html.DisplayFor(model => model.Assignment.Name)</h2>
+    <div class="card">
+        <div class="card-header">Assignment Details</div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Assignment.Name</h5>
+            <p class="card-text">
+                <strong>Description:</strong> @Model.Assignment.Content
+            </p>
+            <p class="card-text">
+                <strong>Due Date: Week</strong> @Model.Assignment.SolvableToWeek
+            </p>
+            <p class="card-text">
+                <strong>Grade:</strong> @(Model.Grade.HasValue ? Model.Grade.Value.ToString("F2") : "Not Graded Yet")
+            </p>
+            <p class="card-text">
+                <strong>This accounts for:</strong> @Model.Assignment.PercentageOutOfTotal<strong>% out of the final grade.</strong>
+            </p>
+
+            @if (hasFile)
+            {
+                <h4>Uploaded Files:</h4>
+                @foreach (var file in files)
+                {
+                    <p>
+                        @file
+                        <form asp-action="DeleteFile" asp-route-id="@Model.Id" asp-route-fileName="@file" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </p>
+                }
+            }
+
+            <form asp-action="UploadFile" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileInput" onchange="checkFile()"/>
+                <button type="submit" disabled="true" id="uploadButton">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function checkFile() {
+        const fileInput = document.getElementById('fileInput');
+        const uploadButton = document.getElementById('uploadButton');
+        uploadButton.disabled = !fileInput.value; 
+    }
+</script>

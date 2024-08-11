@@ -1,0 +1,142 @@
+﻿@inject AwesomeizeCS.Services.Interfaces.IAttendancesService AttendanceService
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - AwesomeizeCS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/AwesomeizeCS.styles.css" asp-append-version="true"/>
+</head>
+<body>
+
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AwesomeizeCS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TeacherOverview" asp-action="Index">Current Activity</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="CourseDetails">Manage Courses</a>
+                        </li><li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="StudentSituation">Download Situation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TimeTables" asp-action="ClassesOfTheDay">Today's Activities</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Student"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="StudentOverview" asp-action="Index">Overview</a>
+                        </li>
+                    }
+                </ul>
+                <partial name="_LoginPartial"/>
+            </div>
+        </div>
+    </nav>
+
+
+</header>
+
+
+<div class="container">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">x</span>
+            <pre>Found it! :3
+Developed by Alexia Goia & Iannis Taravinas 💯
+<a href="https://github.com/saltylex">github.com/saltylex</a>
+<a href="https://github.com/PeluzaVerde">github.com/PeluzaVerde</a>
+            </pre>
+        </div>
+    </div>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        @if (User.IsInRole("Student") && (User.Identity?.IsAuthenticated ?? false))
+        {
+            var userEmail = User.Identity.Name ?? "";
+            var attendanceData = await AttendanceService.GetAttendanceFormData(userEmail);
+
+            if (attendanceData != null)
+            {
+                if (!AttendanceService.AttendanceExists(attendanceData.StudentCourse, attendanceData.Time))
+                {
+                    <div>
+                        <form asp-area="" asp-controller="StudentAttendance" asp-action="Create" method="post">
+                            <input type="hidden" name="StudentCourse.Id" value="@attendanceData.StudentCourse.Id"/>
+                            <input type="hidden" name="Time.Id" value="@attendanceData.Time.Id"/>
+                            <input type="hidden" name="IsValidated" value="false"/>
+                            <button type="submit" class="btn btn-primary">Mark Attendance</button>
+                        </form>
+                    </div>
+                }
+            }
+        }
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>document.addEventListener('keydown', (function() {
+            const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // up, up, down, down, left, right, left, right, b, a
+            let currentIndex = 0;
+        
+            return function(e) {
+                if (e.keyCode === konamiCode[currentIndex]) {
+                    currentIndex++;
+        
+                    if (currentIndex === konamiCode.length) {
+                        showModal();
+                        currentIndex = 0; 
+                    }
+                } else {
+                    currentIndex = 0;
+                }
+            };
+        
+            function showModal() {
+                const modal = document.getElementById('myModal');
+                const span = document.getElementsByClassName("close")[0];
+        
+                modal.style.display = "block";
+        
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+        
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+        })());
+</script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

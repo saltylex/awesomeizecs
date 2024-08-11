@@ -1,0 +1,51 @@
+﻿@model List<StudentSituationViewModel>
+
+
+<form asp-action="GenerateStudentSituation" asp-controller="Courses" method="post">
+    <div>
+        <label for="courseDropdown">Select Course statistics To Download:</label>
+        <select id="courseDropdown" name="courseName">
+            @foreach (var courseName in ViewBag.CourseNames)
+            {
+                <option value="@courseName">@courseName</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Download Student Situation</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Course Name</th>
+            <th>Assignments Grades</th>
+            <th>Attendance Count (Laboratory)</th>
+            <th>Attendance Count (Seminary)</th>
+            <th>Attendance Count (Course)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentName</td>
+                <td>@item.CourseName</td>
+                <td>
+                    @if (item.AssignmentsGrades != null)
+                    {
+                        foreach (var grade in item.AssignmentsGrades)
+                        {
+                            <span>@grade</span>
+
+                            <br />
+                        }
+                    }
+                </td>
+                <td>@item.AttendanceCountLaboratory</td>
+                <td>@item.AttendanceCountSeminary</td>
+                <td>@item.AttendanceCountCourse</td>
+            </tr>
+        }
+    </tbody>
+</table>

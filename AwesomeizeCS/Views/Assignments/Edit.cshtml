@@ -1,0 +1,86 @@
+@using TechnologySandbox.Data
+@model AwesomeizeCS.Domain.Assignment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Assignment</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order" class="control-label"></label>
+                <input asp-for="Order" class="form-control"/>
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <input asp-for="ShortDescription" class="form-control"/>
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control"/>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VisibleFromWeek" class="control-label"></label>
+                <input asp-for="VisibleFromWeek" class="form-control"/>
+                <span asp-validation-for="VisibleFromWeek" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SolvableFromWeek" class="control-label"></label>
+                <input asp-for="SolvableFromWeek" class="form-control"/>
+                <span asp-validation-for="SolvableFromWeek" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SolvableToWeek" class="control-label"></label>
+                <input asp-for="SolvableToWeek" class="form-control"/>
+                <span asp-validation-for="SolvableToWeek" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" class="form-control">
+                    @foreach (var type in Enum.GetValues(typeof(InstructionType)))
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HasGrade"/> @Html.DisplayNameFor(model => model.HasGrade)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bonus" class="control-label"></label>
+                <input asp-for="Bonus" class="form-control"/>
+                <span asp-validation-for="Bonus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PercentageOutOfTotal" class="control-label"></label>
+                <input asp-for="PercentageOutOfTotal" class="form-control"/>
+                <span asp-validation-for="PercentageOutOfTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

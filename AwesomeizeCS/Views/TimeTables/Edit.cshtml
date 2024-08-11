@@ -1,0 +1,82 @@
+@using TechnologySandbox.Data
+@model AwesomeizeCS.Domain.TimeTable
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>TimeTable</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Course" class="control-label"></label>
+                <select asp-for="Course.Id" asp-items="@(new SelectList(ViewBag.Courses, "Value", "Text"))" class="form-control"></select>
+                <span asp-validation-for="Course.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartsAt" class="control-label"></label>
+                <input asp-for="StartsAt" class="form-control" />
+                <span asp-validation-for="StartsAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndsAt" class="control-label"></label>
+                <input asp-for="EndsAt" class="form-control" />
+                <span asp-validation-for="EndsAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="For" class="control-label"></label>
+                <input asp-for="For" class="form-control" />
+                <span asp-validation-for="For" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room" class="control-label"></label>
+                <input asp-for="Room" class="form-control" />
+                <span asp-validation-for="Room" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Week" class="control-label"></label>
+                <input asp-for="Week" class="form-control" />
+                <span asp-validation-for="Week" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order" class="control-label"></label>
+                <input asp-for="Order" class="form-control" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcademicYear" class="control-label"></label>
+                <input asp-for="AcademicYear" class="form-control" />
+                <span asp-validation-for="AcademicYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaughtBy" class="control-label"></label>
+                <input asp-for="TaughtBy" class="form-control" />
+                <span asp-validation-for="TaughtBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificAttendanceTracking" class="control-label"></label>
+                <select asp-for="SpecificAttendanceTracking" class="form-control">
+                    @foreach (var attendanceTracking in Enum.GetValues(typeof(AttendanceTracking)))
+                                        {
+                                            <option value="@attendanceTracking">@attendanceTracking</option>
+                                        }
+                </select>
+                <span asp-validation-for="SpecificAttendanceTracking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
