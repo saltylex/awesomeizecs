@@ -76,9 +76,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// seeding initial roles and 3 accounts into our application
-// admin@admin.com, student@student.com, teacher@teacher.com
-// password: 123Aa.
+// seeding initial roles and 3 accounts into our application, for testing purposes ONLY.
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
