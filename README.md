@@ -37,9 +37,3 @@ This project showcases a full-stack application with CRUD functionalities, entit
 
 ### Instant Feedback
 ![image](https://github.com/user-attachments/assets/0fa76291-7554-42c3-915d-fe930077cee6)
-
-
-
-## License
-
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](./LICENSE) file for details.
