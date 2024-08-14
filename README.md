@@ -9,7 +9,7 @@ This project showcases a full-stack application with CRUD functionalities, entit
 - Backend: C#, ASP.NET, Entity Framework
 - Database: MS SQL Server 2022
 - Frontend: Razor Pages, Bootstrap 5, AJAX, Javascript
-
+ 
 ## Features
 
 - CRUD operations for multiple entities
